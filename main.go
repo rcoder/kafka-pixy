@@ -22,6 +22,7 @@ const (
 	defaultZookeeperPeers = "localhost:2181"
 	defaultTCPAddr        = "0.0.0.0:19092"
 	defaultLoggingCfg     = `[{"name": "console", "severity": "info"}]`
+	defaultFlushInterval  = 500
 )
 
 var (
@@ -33,6 +34,7 @@ var (
 func init() {
 	cfg = config.Default()
 	var kafkaPeers, zookeeperPeers string
+	var flushInterval int
 
 	flag.StringVar(&cfg.TCPAddr, "tcpAddr", defaultTCPAddr, "TCP address that the HTTP API should listen on")
 	flag.StringVar(&cfg.UnixAddr, "unixAddr", "", "Unix domain socket address that the HTTP API should listen on")
@@ -40,6 +42,7 @@ func init() {
 	flag.StringVar(&zookeeperPeers, "zookeeperPeers", defaultZookeeperPeers, "Comma separated list of ZooKeeper nodes followed by optional chroot")
 	flag.StringVar(&pidFile, "pidFile", "", "Path to the PID file")
 	flag.StringVar(&loggingJSONCfg, "logging", defaultLoggingCfg, "Logging configuration")
+	flag.IntVar(&flushInterval, "flushInterval", defaultFlushInterval, "Producer flush interval in msec")
 	flag.Parse()
 
 	cfg.Kafka.SeedPeers = strings.Split(kafkaPeers, ",")
@@ -51,6 +54,8 @@ func init() {
 	} else {
 		cfg.ZooKeeper.SeedPeers = strings.Split(zookeeperPeers, ",")
 	}
+
+	cfg.Producer.FlushInterval = flushInterval
 }
 
 func main() {

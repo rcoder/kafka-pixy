@@ -43,6 +43,8 @@ type T struct {
 		// DeadMessageCh is a channel to dump undelivered messages into. It is
 		// used in testing only.
 		DeadMessageCh chan<- *sarama.ProducerMessage
+		// Time between automatic flushes of buffered async messages
+		FlushInterval int
 	}
 	Consumer struct {
 		// Size of all buffered channels created by the consumer components.

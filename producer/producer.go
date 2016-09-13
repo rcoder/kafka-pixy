@@ -51,7 +51,7 @@ func Spawn(cfg *config.T) (*T, error) {
 	saramaCfg.Producer.Compression = sarama.CompressionSnappy
 	saramaCfg.Producer.Retry.Backoff = 10 * time.Second
 	saramaCfg.Producer.Retry.Max = 6
-	saramaCfg.Producer.Flush.Frequency = 500 * time.Millisecond
+	saramaCfg.Producer.Flush.Frequency = time.Duration(1000 * cfg.Producer.FlushInterval)
 	saramaCfg.Producer.Flush.Bytes = 1024 * 1024
 
 	saramaClient, err := sarama.NewClient(cfg.Kafka.SeedPeers, saramaCfg)
