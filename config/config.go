@@ -44,7 +44,7 @@ type T struct {
 		// used in testing only.
 		DeadMessageCh chan<- *sarama.ProducerMessage
 		// Time between automatic flushes of buffered async messages
-		FlushInterval int
+		FlushInterval time.Duration
 	}
 	Consumer struct {
 		// Size of all buffered channels created by the consumer components.
